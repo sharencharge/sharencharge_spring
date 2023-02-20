@@ -1,12 +1,13 @@
 package fr.ipme.sharencharge.pojos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
-public class User {
+public class User implements IdentifiablePojo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,20 +19,27 @@ public class User {
     @Email
     @Column(unique = true, nullable = false)
     private String email;
-    @JsonIgnore
+
     @Column(nullable = false)
-    private String passwordHash;
+    private String password;
 
     private String phoneNumber;
 
     private String urlAvatar;
+    @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL)
+    private List<Address> addresses;
+    @OneToMany(targetEntity = Station.class, mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Station> stations;
+    @OneToMany(targetEntity = Rent.class, mappedBy = "user", fetch = FetchType.LAZY)
+    @NotNull(message = "Rent Null")
+    private List<Rent> rents;
 
     public User() {
     }
 
     public User(String email, String password) {
         this.email = email;
-        this.passwordHash = password;
+        this.password = password;
     }
 
     public Long getId() {
@@ -66,12 +74,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhoneNumber() {
@@ -88,5 +96,29 @@ public class User {
 
     public void setUrlAvatar(String urlAvatar) {
         this.urlAvatar = urlAvatar;
+    }
+
+    public List<Address> getAddress() {
+        return addresses;
+    }
+
+    public void setAddress(List<Address> address) {
+        this.addresses = address;
+    }
+
+    public List<Station> getStations() {
+        return stations;
+    }
+
+    public void setStations(List<Station> stations) {
+        this.stations = stations;
+    }
+
+    public List<Rent> getRents() {
+        return rents;
+    }
+
+    public void setRents(List<Rent> rents) {
+        this.rents = rents;
     }
 }
