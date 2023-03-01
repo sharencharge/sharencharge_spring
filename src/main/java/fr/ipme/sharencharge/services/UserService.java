@@ -1,10 +1,7 @@
 package fr.ipme.sharencharge.services;
 
 import com.github.javafaker.Faker;
-import fr.ipme.sharencharge.pojos.Address;
-import fr.ipme.sharencharge.pojos.Availability;
-import fr.ipme.sharencharge.pojos.Station;
-import fr.ipme.sharencharge.pojos.User;
+import fr.ipme.sharencharge.pojos.*;
 import fr.ipme.sharencharge.repositories.StationRepository;
 import fr.ipme.sharencharge.repositories.UserRepository;
 import fr.ipme.sharencharge.services.generic.GenericService;
@@ -34,6 +31,7 @@ public class UserService extends GenericService<User> {
     }
 
     public void generateUser(){
+        List<User> users = new ArrayList<User>();
         for (int i = 0; i < 100; i++) {
             User user = new User();
 
@@ -66,11 +64,32 @@ public class UserService extends GenericService<User> {
                     station.getAvailabilities().add(availability);
                 }
             }
-            userRepository.save(user);
+            users.add(user);
         }
+        for (User user:
+             users) {
+            user.setRents(new ArrayList<>());
+            for (Station station:
+                 user.getStations()) {
+                for (Availability availability :
+                        station.getAvailabilities()) {
+                    Rent rent = new Rent();
+                    rent.setUser(users.get((int) Math.round(Math.random()*99)));
+                    rent.setAvailabilities(new ArrayList<>());
+                    rent.getAvailabilities().add(availability);
+                    user.getRents().add(rent);
+                }
+            }
+        }
+
+        userRepository.saveAll(users);
     }
     public List<Station> findStationByUserId(Long id) {
         User user = this.findById(id);
         return this.stationService.findByUser(user);
+    }
+
+    public User findOwnerByRentId(Long id) {
+        return userRepository.findOwnerById(id);
     }
 }

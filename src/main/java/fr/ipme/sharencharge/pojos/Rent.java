@@ -1,5 +1,6 @@
 package fr.ipme.sharencharge.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.ipme.sharencharge.enumeration.Status;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Rent implements IdentifiablePojo{
     private List<Availability> availabilities;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     public User getUser() {
@@ -34,6 +36,7 @@ public class Rent implements IdentifiablePojo{
 
     public Rent() {
         this.byuAt = LocalDateTime.now();
+        this.status = Status.PENDING;
     }
 
     public List<Availability> getAvailabilities() {

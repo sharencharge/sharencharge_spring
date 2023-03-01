@@ -30,7 +30,7 @@ public class User implements IdentifiablePojo{
     private List<Address> addresses;
     @OneToMany(targetEntity = Station.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Station> stations;
-    @OneToMany(targetEntity = Rent.class, mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Rent.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @NotNull(message = "Rent Null")
     private List<Rent> rents;
 

@@ -21,6 +21,7 @@ public class Availability implements IdentifiablePojo{
     @JoinColumn(name = "station_id")
     private Station station;
     @ManyToMany
+    @JsonIgnore
     private List<Rent> rents;
 
     public Availability() {
