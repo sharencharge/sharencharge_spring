@@ -28,7 +28,7 @@ public class User implements IdentifiablePojo{
     private String urlAvatar;
     @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL)
     private List<Address> addresses;
-    @OneToMany(targetEntity = Station.class, mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Station.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Station> stations;
     @OneToMany(targetEntity = Rent.class, mappedBy = "user", fetch = FetchType.LAZY)
     @NotNull(message = "Rent Null")

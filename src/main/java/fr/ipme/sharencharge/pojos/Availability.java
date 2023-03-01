@@ -1,5 +1,7 @@
 package fr.ipme.sharencharge.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class Availability implements IdentifiablePojo{
     private Integer duration;
     private Float price;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "station_id")
     private Station station;
     @ManyToMany
