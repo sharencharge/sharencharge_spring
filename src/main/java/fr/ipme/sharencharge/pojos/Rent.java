@@ -13,14 +13,11 @@ public class Rent implements IdentifiablePojo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private LocalDateTime byuAt;
     @Enumerated(EnumType.STRING)
     private Status status;
-
     @ManyToMany
     private List<Availability> availabilities;
-
     @ManyToOne
     @JsonIgnore
     private User user;

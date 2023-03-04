@@ -3,6 +3,7 @@ package fr.ipme.sharencharge.pojos;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -11,27 +12,24 @@ public class User implements IdentifiablePojo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotNull(message = "Firstname is null")
+    @NotBlank(message = "firstname is mandatory")
     private String firstname;
-
+    @NotNull(message = "Lastname is null")
+    @NotBlank(message = "lastname is mandatory")
     private String lastname;
-
-    @Email
+    @Email(message = "Email not Valid")
     @Column(unique = true, nullable = false)
     private String email;
-
     @Column(nullable = false)
     private String password;
-
     private String phoneNumber;
-
     private String urlAvatar;
     @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL)
     private List<Address> addresses;
     @OneToMany(targetEntity = Station.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Station> stations;
     @OneToMany(targetEntity = Rent.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @NotNull(message = "Rent Null")
     private List<Rent> rents;
 
     public User() {
