@@ -6,6 +6,9 @@ import fr.ipme.sharencharge.repositories.StationRepository;
 import fr.ipme.sharencharge.repositories.UserRepository;
 import fr.ipme.sharencharge.services.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
-public class UserService extends GenericService<User> {
+public class UserService extends GenericService<User> implements UserDetailsService {
     private final UserRepository userRepository;
     @Autowired
     private StationService stationService;
@@ -91,5 +94,18 @@ public class UserService extends GenericService<User> {
 
     public User findOwnerByRentId(Long id) {
         return userRepository.findOwnerById(id);
+    }
+
+    public User findByLogin(String login) {
+        return userRepository.findByEmail(login);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
+
+    public boolean existsByEmail(String email) {
+       return userRepository.findByEmail(email) != null;
     }
 }

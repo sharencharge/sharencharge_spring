@@ -1,14 +1,20 @@
 package fr.ipme.sharencharge.pojos;
 
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-public class User implements IdentifiablePojo{
+public class User implements IdentifiablePojo, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +31,15 @@ public class User implements IdentifiablePojo{
     private String password;
     private String phoneNumber;
     private String urlAvatar;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    private Collection<? extends GrantedAuthority> authorities;
+
     @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL)
     private List<Address> addresses;
     @OneToMany(targetEntity = Station.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -76,6 +91,31 @@ public class User implements IdentifiablePojo{
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -118,5 +158,29 @@ public class User implements IdentifiablePojo{
 
     public void setRents(List<Rent> rents) {
         this.rents = rents;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 }
