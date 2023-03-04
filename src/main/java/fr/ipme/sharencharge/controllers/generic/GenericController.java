@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 //@RestController
 public abstract class GenericController<T extends IdentifiablePojo>{
@@ -32,7 +33,7 @@ public abstract class GenericController<T extends IdentifiablePojo>{
     }
 
     @PostMapping("")
-    public ResponseEntity<T> add(@RequestBody T updated){
+    public ResponseEntity<T> add(@Valid @RequestBody T updated){
         return ResponseEntity.ok(generiqueService.save(updated));
     }
 
