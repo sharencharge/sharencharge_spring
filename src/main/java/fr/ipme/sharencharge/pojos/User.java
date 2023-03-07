@@ -36,7 +36,7 @@ public class User implements IdentifiablePojo{
     private String phoneNumber;
     private String urlAvatar;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -59,12 +59,13 @@ public class User implements IdentifiablePojo{
         initRoles();
     }
 
-    public User(String username, String email, String password) {
+    public User(String username, String firstname, String lastname, String email, String password) {
         this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.password = password;
         initRoles();
-
     }
 
     public Long getId() {

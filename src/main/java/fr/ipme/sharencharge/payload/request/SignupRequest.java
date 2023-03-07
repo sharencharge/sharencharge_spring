@@ -2,10 +2,18 @@ package fr.ipme.sharencharge.payload.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
 public class SignupRequest {
+
+  @NotNull(message = "Firstname is null")
+  @NotBlank(message = "firstname is mandatory")
+  private String firstname;
+  @NotNull(message = "Lastname is null")
+  @NotBlank(message = "lastname is mandatory")
+  private String lastname;
   @NotBlank
   @Size(min = 3, max = 20)
   private String username;
@@ -20,6 +28,22 @@ public class SignupRequest {
   @NotBlank
   @Size(min = 6, max = 40)
   private String password;
+
+  public String getFirstname() {
+    return firstname;
+  }
+
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
+  }
+
+  public String getLastname() {
+    return lastname;
+  }
+
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
+  }
 
   public String getUsername() {
     return username;
