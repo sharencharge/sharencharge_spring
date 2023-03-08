@@ -40,7 +40,9 @@ public class UserService extends GenericService<User> implements UserDetailsServ
 
             user.setFirstname(faker.name().firstName());
             user.setLastname(faker.name().lastName());
+            user.setUsername(faker.name().username());
             user.setEmail(faker.internet().emailAddress());
+            user.setUrlAvatar("https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/June_odd-eyed-cat_cropped.jpg/1216px-June_odd-eyed-cat_cropped.jpg");
             user.setPassword(faker.internet().password());
             user.setStations(new ArrayList<>());
             user.setAddress(new ArrayList<>());
@@ -48,6 +50,7 @@ public class UserService extends GenericService<User> implements UserDetailsServ
                 Station station = new Station();
                 station.setName(faker.funnyName().name());
                 station.setUser(user);
+                station.setImage("https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/June_odd-eyed-cat_cropped.jpg/1216px-June_odd-eyed-cat_cropped.jpg");
                 station.setAvailabilities(new ArrayList<>());
                 user.getStations().add(station);
 
@@ -55,6 +58,8 @@ public class UserService extends GenericService<User> implements UserDetailsServ
                 address.setCity(faker.address().city());
                 address.setStreetName(faker.address().streetName());
                 address.setStreetNumber(faker.address().streetAddressNumber());
+
+                station.setAddress(address);
                 user.getAddress().add(address);
 
 

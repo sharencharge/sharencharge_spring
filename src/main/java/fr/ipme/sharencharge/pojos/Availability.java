@@ -20,7 +20,7 @@ public class Availability implements IdentifiablePojo{
     @JsonIgnore
     @JoinColumn(name = "station_id")
     private Station station;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Rent> rents;
 

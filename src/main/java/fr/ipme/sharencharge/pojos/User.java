@@ -26,7 +26,6 @@ public class User implements IdentifiablePojo{
     private String lastname;
 
     @NotBlank
-    @Size(max = 20)
     private String username;
     @Email(message = "Email not Valid")
     @Column(unique = true, nullable = false)
