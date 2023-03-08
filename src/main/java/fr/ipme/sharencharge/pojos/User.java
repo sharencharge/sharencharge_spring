@@ -1,11 +1,17 @@
 package fr.ipme.sharencharge.pojos;
 
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User implements IdentifiablePojo{
@@ -18,6 +24,9 @@ public class User implements IdentifiablePojo{
     @NotNull(message = "Lastname is null")
     @NotBlank(message = "lastname is mandatory")
     private String lastname;
+
+    @NotBlank
+    private String username;
     @Email(message = "Email not Valid")
     @Column(unique = true, nullable = false)
     private String email;
@@ -25,6 +34,13 @@ public class User implements IdentifiablePojo{
     private String password;
     private String phoneNumber;
     private String urlAvatar;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
     @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL)
     private List<Address> addresses;
     @OneToMany(targetEntity = Station.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -33,11 +49,22 @@ public class User implements IdentifiablePojo{
     private List<Rent> rents;
 
     public User() {
+        initRoles();
     }
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        initRoles();
+    }
+
+    public User(String username, String firstname, String lastname, String email, String password) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        initRoles();
     }
 
     public Long getId() {
@@ -118,5 +145,36 @@ public class User implements IdentifiablePojo{
 
     public void setRents(List<Rent> rents) {
         this.rents = rents;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void initRoles(){
+        Role role = new Role(ERole.ROLE_USER);
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        setRoles(roles);
     }
 }

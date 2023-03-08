@@ -6,6 +6,9 @@ import fr.ipme.sharencharge.repositories.StationRepository;
 import fr.ipme.sharencharge.repositories.UserRepository;
 import fr.ipme.sharencharge.services.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
-public class UserService extends GenericService<User> {
+public class UserService extends GenericService<User> implements UserDetailsService {
     private final UserRepository userRepository;
     @Autowired
     private StationService stationService;
@@ -37,7 +40,9 @@ public class UserService extends GenericService<User> {
 
             user.setFirstname(faker.name().firstName());
             user.setLastname(faker.name().lastName());
+            user.setUsername(faker.name().username());
             user.setEmail(faker.internet().emailAddress());
+            user.setUrlAvatar("https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/June_odd-eyed-cat_cropped.jpg/1216px-June_odd-eyed-cat_cropped.jpg");
             user.setPassword(faker.internet().password());
             user.setStations(new ArrayList<>());
             user.setAddress(new ArrayList<>());
@@ -45,6 +50,7 @@ public class UserService extends GenericService<User> {
                 Station station = new Station();
                 station.setName(faker.funnyName().name());
                 station.setUser(user);
+                station.setImage("https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/June_odd-eyed-cat_cropped.jpg/1216px-June_odd-eyed-cat_cropped.jpg");
                 station.setAvailabilities(new ArrayList<>());
                 user.getStations().add(station);
 
@@ -52,6 +58,8 @@ public class UserService extends GenericService<User> {
                 address.setCity(faker.address().city());
                 address.setStreetName(faker.address().streetName());
                 address.setStreetNumber(faker.address().streetAddressNumber());
+
+                station.setAddress(address);
                 user.getAddress().add(address);
 
 
@@ -91,5 +99,18 @@ public class UserService extends GenericService<User> {
 
     public User findOwnerByRentId(Long id) {
         return userRepository.findOwnerById(id);
+    }
+
+    public User findByLogin(String login) {
+        return userRepository.findByEmail(login);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
+
+    public boolean existsByEmail(String email) {
+       return userRepository.findByEmail(email) != null;
     }
 }
