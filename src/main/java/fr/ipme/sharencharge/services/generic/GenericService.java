@@ -4,6 +4,8 @@ import fr.ipme.sharencharge.exceptions.DataIdNotFoundException;
 import fr.ipme.sharencharge.pojos.IdentifiablePojo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -57,5 +59,15 @@ public class GenericService<T extends IdentifiablePojo> {
 
     public void deleteById(Long id){
         jpaRepository.deleteById(id);
+    }
+
+    public List<T> findAllPageable(String limit, String page){
+        try{
+            return this.jpaRepository.findAll(PageRequest.of(Integer.parseInt(page), Integer.parseInt(limit))).getContent();
+
+        } catch(IllegalArgumentException e) {
+
+            return this.jpaRepository.findAll(PageRequest.of(0, 6)).getContent();
+        }
     }
 }

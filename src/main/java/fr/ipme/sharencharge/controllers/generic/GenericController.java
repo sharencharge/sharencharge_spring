@@ -19,11 +19,14 @@ public abstract class GenericController<T extends IdentifiablePojo>{
     }
 
     @GetMapping("/")
-    public  ResponseEntity<List<T>> getAll(){
-
-
-//        return ResponseEntity.ok((List<T>) jpaRepository.findAll());
-        return ResponseEntity.ok((List<T>) generiqueService.findAll());
+    public  ResponseEntity<List<T>> getAll(@RequestParam(required = false) String limit,
+                                           @RequestParam(required = false) String page
+                                           ){
+        if( limit != null && page != null){
+            return ResponseEntity.ok(generiqueService.findAllPageable(limit, page));
+        } else {
+            return ResponseEntity.ok((List<T>) generiqueService.findAll());
+        }
     }
 
     @GetMapping("/{id}")

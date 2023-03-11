@@ -17,5 +17,4 @@ public class StationController extends GenericController<Station> {
     public StationController() {
     }
 
-
 }
