@@ -1,6 +1,10 @@
 package fr.ipme.sharencharge.pojos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fr.ipme.sharencharge.serializer.CustomUserSerializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -25,9 +29,9 @@ public class Station implements IdentifiablePojo{
     private Address address;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn
     @NotNull(message = "User is null")
+    @JsonSerialize(using = CustomUserSerializer.class)
     private User user;
     @OneToMany(targetEntity = Availability.class, mappedBy = "station", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Availability> availabilities;
@@ -50,6 +54,7 @@ public class Station implements IdentifiablePojo{
     }
 
     public Station() {
+        this.createAt = LocalDateTime.now();
     }
 
     @Override
