@@ -5,6 +5,8 @@ import fr.ipme.sharencharge.pojos.User;
 import fr.ipme.sharencharge.repositories.StationRepository;
 import fr.ipme.sharencharge.services.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

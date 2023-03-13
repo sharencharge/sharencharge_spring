@@ -1,6 +1,10 @@
 package fr.ipme.sharencharge.pojos;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fr.ipme.sharencharge.serializer.CustomStationSerializer;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -44,6 +48,7 @@ public class User implements IdentifiablePojo{
     @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL)
     private List<Address> addresses;
     @OneToMany(targetEntity = Station.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonSerialize(using = CustomStationSerializer.class)
     private List<Station> stations;
     @OneToMany(targetEntity = Rent.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Rent> rents;
