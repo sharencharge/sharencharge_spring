@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fr.ipme.sharencharge.serializer.CustomAvailibilitySerializer;
 import fr.ipme.sharencharge.serializer.CustomUserSerializer;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class Station implements IdentifiablePojo{
     @JsonSerialize(using = CustomUserSerializer.class)
     private User user;
     @OneToMany(targetEntity = Availability.class, mappedBy = "station", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonSerialize(using = CustomAvailibilitySerializer.class)
     private List<Availability> availabilities;
 
 

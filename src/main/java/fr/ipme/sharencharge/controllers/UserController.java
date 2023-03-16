@@ -1,8 +1,10 @@
 package fr.ipme.sharencharge.controllers;
 
 import fr.ipme.sharencharge.controllers.generic.GenericController;
+import fr.ipme.sharencharge.pojos.Address;
 import fr.ipme.sharencharge.pojos.Station;
 import fr.ipme.sharencharge.pojos.User;
+import fr.ipme.sharencharge.services.AddressService;
 import fr.ipme.sharencharge.services.StationService;
 import fr.ipme.sharencharge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ import java.util.List;
 public class UserController extends GenericController<User> {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AddressService addressService;
 
     public UserController() {
     }
@@ -31,4 +36,8 @@ public class UserController extends GenericController<User> {
         return ResponseEntity.ok(userService.findAll());
     }
 
+    @GetMapping("/address/{id}")
+    public ResponseEntity<Address> getAddress(@PathVariable Long id){
+        return ResponseEntity.ok(addressService.findById(id));
+    }
 }

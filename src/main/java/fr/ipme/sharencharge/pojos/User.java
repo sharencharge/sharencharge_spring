@@ -1,6 +1,7 @@
 package fr.ipme.sharencharge.pojos;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -35,6 +36,7 @@ public class User implements IdentifiablePojo{
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
     private String phoneNumber;
     private String urlAvatar;
