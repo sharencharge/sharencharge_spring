@@ -26,7 +26,7 @@ public class StationService extends GenericService<Station> {
         return this.stationRepository.findByUser(user);
     }
 
-    public List<Station> findStationByCity(String search, String limit, String page) {
-        return this.stationRepository.findByAddress_CityContainsIgnoreCase(search, PageRequest.of(Integer.parseInt(page), Integer.parseInt(limit))).getContent();
+    public Page<Station> findStationByCity(String search, String limit, String page) {
+        return this.stationRepository.findByAddress_CityContainsIgnoreCase(search, PageRequest.of(Integer.parseInt(page), Integer.parseInt(limit)));
     }
 }
