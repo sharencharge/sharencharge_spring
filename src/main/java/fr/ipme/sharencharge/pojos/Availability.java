@@ -1,6 +1,9 @@
 package fr.ipme.sharencharge.pojos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fr.ipme.sharencharge.serializer.CustomAvailibilitySerializer;
+import fr.ipme.sharencharge.serializer.CustomStationASerializer;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,7 +20,7 @@ public class Availability implements IdentifiablePojo{
     private Integer duration;
     private Float price;
     @ManyToOne
-    @JsonIgnore
+    @JsonSerialize(using = CustomStationASerializer.class)
     @JoinColumn(name = "station_id")
     private Station station;
     @ManyToMany(cascade = CascadeType.ALL)

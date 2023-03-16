@@ -12,7 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,14 +64,24 @@ public class UserService extends GenericService<User> implements UserDetailsServ
                 station.setAddress(address);
                 user.getAddress().add(address);
 
-
+                List <String> weekDay = new ArrayList<>();
+                weekDay.add("Lundi");
+                weekDay.add("Mardi");
+                weekDay.add("Mercredi");
+                weekDay.add("Jeudi");
+                weekDay.add("Vendredi");
                 for (int k = 0; k < 5; k++) {
-                    Availability availability = new Availability();
-                    availability.setDuration(faker.number().numberBetween(10,40));
-                    availability.setBeginHour(String.valueOf(faker.number().numberBetween(0,12)));
-                    availability.setEndHour(String.valueOf(Integer.parseInt(availability.getBeginHour()) + Math.round(Math.random()*3)));
-                    availability.setStation(station);
-                    station.getAvailabilities().add(availability);
+                    float beginHour =  faker.number().numberBetween(0,20);
+                    for (int l = 0; l < 4; l++) {
+                        Availability availability = new Availability();
+                        availability.setDuration(faker.number().numberBetween(10,40));
+                        availability.setBeginHour(String.valueOf(beginHour));
+                        beginHour = (float) (beginHour + 0.5);
+                        availability.setEndHour(String.valueOf(Float.parseFloat(availability.getBeginHour()) + 0.5));
+                        availability.setWeekDay(weekDay.get(k));
+                        availability.setStation(station);
+                        station.getAvailabilities().add(availability);
+                    }
                 }
             }
             users.add(user);
