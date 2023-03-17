@@ -25,4 +25,10 @@ public class InvalidDataResponse {
     public String RoleNotDefinedHandler(RoleNotDefinedException e) {
         return e.getMessage();
     }
+    @ResponseBody
+    @ExceptionHandler(NumberFormatException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String NumberFormatHandler(NumberFormatException e) {
+        return "Invalide Format data";
+    }
 }

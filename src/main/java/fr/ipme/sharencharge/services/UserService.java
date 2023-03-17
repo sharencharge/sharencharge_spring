@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,6 +22,8 @@ import java.util.Locale;
 @Service
 public class UserService extends GenericService<User> implements UserDetailsService {
     private final UserRepository userRepository;
+    @Autowired
+    PasswordEncoder encoder;
     @Autowired
     private StationService stationService;
     private Faker faker;
@@ -44,15 +47,15 @@ public class UserService extends GenericService<User> implements UserDetailsServ
             user.setLastname(faker.name().lastName());
             user.setUsername(faker.name().username());
             user.setEmail(faker.internet().emailAddress());
-            user.setUrlAvatar("https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/June_odd-eyed-cat_cropped.jpg/1216px-June_odd-eyed-cat_cropped.jpg");
-            user.setPassword(faker.internet().password());
+            user.setUrlAvatar("https://cdn-icons-png.flaticon.com/512/235/235349.png");
+            user.setPassword( encoder.encode("tototo"));
             user.setStations(new ArrayList<>());
             user.setAddress(new ArrayList<>());
             for (int j = 0; j < 2; j++) {
                 Station station = new Station();
                 station.setName(faker.funnyName().name());
                 station.setUser(user);
-                station.setImage("https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/June_odd-eyed-cat_cropped.jpg/1216px-June_odd-eyed-cat_cropped.jpg");
+                station.setImage("https://cdn-icons-png.flaticon.com/512/1978/1978885.png");
                 station.setAvailabilities(new ArrayList<>());
                 user.getStations().add(station);
 
