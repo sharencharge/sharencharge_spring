@@ -27,6 +27,10 @@ public class StationService extends GenericService<Station> {
     }
 
     public Page<Station> findStationByCity(String search, String limit, String page) {
-        return this.stationRepository.findByAddress_CityContainsIgnoreCase(search, PageRequest.of(Integer.parseInt(page), Integer.parseInt(limit)));
+        return this.stationRepository
+                        .findByAddress_CityContainsIgnoreCase(
+                                                        search,
+                                                        PageRequest.of(Integer.parseInt(page), Integer.parseInt(limit))
+                        );
     }
 }
